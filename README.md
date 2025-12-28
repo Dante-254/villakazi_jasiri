@@ -106,3 +106,31 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Cloudinary integration (Gallery)
+
+This project includes Cloudinary support for event galleries. Set these environment variables in your local `.env` or on Vercel:
+
+```
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+Files added:
+- `src/lib/cloudinary.ts` — Cloudinary configuration
+- `src/lib/cloudinaryUpload.ts` — `uploadMedia(source, eventName)` helper
+- `src/app/api/events/[event]/route.ts` — `GET /api/events/:event` returns media for the event tag
+- `src/components/gallery/GalleryClient.tsx` — client UI to filter events and render gallery
+- Updated `src/app/gallery/page.tsx` to use the event filters and gallery client
+
+The API returns transformed URLs (f_auto,q_auto,w_500) for responsive delivery.
+
+Admin upload
+
+- A basic admin upload UI exists at: `/admin/events/[slug]/upload`
+- Upload endpoint: `POST /api/admin/events/:slug/upload` accepts JSON payload `{ filename, data }` where `data` is a data URL (e.g. `data:image/jpeg;base64,...`).
+- Files are uploaded to Cloudinary under folder `villakazi/events/<slug>` and tagged with the event slug.
+
+Notes: The upload endpoint performs a basic cookie gate (requires the `sb_admin_token` cookie).
+

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@prisma/config": "^7.0.1",
+    "@supabase/supabase-js": "^2.89.0",
+    "cloudinary": "^1.41.3",
     "dotenv": "^17.2.3",
     "framer-motion": "^12.23.25",
     "next": "16.0.10",
