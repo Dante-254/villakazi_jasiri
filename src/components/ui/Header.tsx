@@ -16,6 +16,7 @@ const NAV_LINKS = [
   { href: "/events", label: "Events" },
   { href: "/blog", label: "Blog / Announcements" },
   { href: "/contact", label: "Contact" },
+  { href: "/admin", label: "Admin" },
 ];
 
 export default function Header() {
