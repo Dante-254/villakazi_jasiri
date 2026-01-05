@@ -1,0 +1,65 @@
+{% extends "index.html" %} {% block title %}Events{% endblock %} {% block content %}
+<div class="container-fluid py-6">
+  <div class="container">
+    <div class="text-center mx-auto mb-5" style="max-width: 500px">
+      <h6 class="text-primary text-uppercase mb-2">Events</h6>
+      <h1 class="display-6 mb-4">All Events</h1>
+      <p>
+        Browse our featured and past events; click an event to view its gallery
+        and photos.
+      </p>
+    </div>
+    {% if events %}
+    <div class="row g-4">
+      {% for event in events %}
+      <div class="col-lg-4 col-md-6">
+        <div
+          class="courses-item d-flex flex-column bg-light overflow-hidden h-100"
+        >
+          {% if event.image %}
+          <div class="text-center p-0">
+            <img
+              class="img-fluid w-100"
+              src="{{ event.image.url }}"
+              alt="{{ event.title }}"
+              style="height: 250px; object-fit: cover"
+            />
+          </div>
+          {% endif %}
+          <div class="text-center p-4">
+            <h5 class="mb-3">{{ event.title }}</h5>
+            <p>{{ event.description|truncatewords:20 }}</p>
+            <ol class="breadcrumb justify-content-center mb-0">
+              <li class="breadcrumb-item small">
+                <i class="fa fa-calendar-alt text-primary me-2"></i>{{
+                event.date|date:"M d, Y" }}
+              </li>
+              {% if event.location %}
+              <li class="breadcrumb-item small">
+                <i class="fa fa-map-marker-alt text-primary me-2"></i>{{
+                event.location }}
+              </li>
+              {% endif %}
+            </ol>
+          </div>
+          <div class="position-relative mt-auto">
+            <div class="courses-overlay">
+              <a
+                class="btn btn-outline-primary border-2"
+                href="{% url 'event_gallery' event.id %}"
+                >View Gallery</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+      <p class="text-muted">No events found.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

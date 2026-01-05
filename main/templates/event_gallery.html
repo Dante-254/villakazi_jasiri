@@ -1,0 +1,44 @@
+{% extends "index.html" %}
+{% block title %} {{ event.title }} Gallery {% endblock %}
+{% load static %}
+
+{% block content %}
+<!-- Event Gallery Start -->
+<div class="container-fluid py-6">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="text-primary text-uppercase mb-2">Gallery</h6>
+            <h1 class="display-6 mb-4">{{ event.title }}</h1>
+            {% if event.date %}
+            <p class="text-muted"><i class="fa fa-calendar-alt text-primary me-2"></i>{{ event.date|date:"F d, Y" }}</p>
+            {% endif %}
+        </div>
+        
+        {% if gallery_images %}
+        <div class="row g-4">
+            {% for image in gallery_images %}
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="gallery-item position-relative overflow-hidden">
+                    <img class="img-fluid w-100" src="{{ image.image.url }}" alt="{{ image.caption|default:event.title }}" style="height: 300px; object-fit: cover;">
+                    {% if image.caption %}
+                    <div class="gallery-overlay bg-primary d-flex align-items-center justify-content-center">
+                        <p class="text-white mb-0 text-center px-3">{{ image.caption }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <p class="text-muted">No images in this gallery yet.</p>
+        </div>
+        {% endif %}
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'gallery' %}" class="btn btn-primary">Back to Gallery</a>
+        </div>
+    </div>
+</div>
+<!-- Event Gallery End -->
+{% endblock %}

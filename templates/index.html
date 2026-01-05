@@ -74,21 +74,21 @@
           <div class="h-100 d-inline-flex align-items-center mx-n2">
             <a
               class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary"
-              href=""
+              href="https://www.facebook.com/villakazi"
+              target="_blank"
               ><i class="fab fa-facebook-f"></i
             ></a>
             <a
               class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary"
-              href=""
-              ><i class="fab fa-twitter"></i
+              href="https://www.instagram.com/villakazi"
+              target="_blank"
+              ><i class="fab fa-instagram"></i
             ></a>
             <a
-              class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary"
-              href=""
-              ><i class="fab fa-linkedin-in"></i
-            ></a>
-            <a class="btn btn-square btn-link rounded-0" href=""
-              ><i class="fab fa-instagram"></i
+              class="btn btn-square btn-link rounded-0"
+              href="https://www.tiktok.com"
+              target="_blank"
+              ><i class="fab fa-tiktok"></i
             ></a>
           </div>
         </div>
@@ -115,22 +115,7 @@
         <div class="navbar-nav ms-auto p-4 p-lg-0">
           <a href="/" class="nav-item nav-link active">Home</a>
           <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
-          <div class="nav-item dropdown">
-            <a
-              href="#"
-              class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
-              >Structure</a
-            >
-            <div class="dropdown-menu bg-light m-0">
-              <a href="{% url 'kenya_scouts_law' %}" class="dropdown-item"
-                >Kenya Scouts Law and structure</a
-              >
-              <a href="{% url 'leadership' %}" class="dropdown-item"
-                >Leadership/Crew council</a
-              >
-            </div>
-          </div>
+
           <div class="nav-item dropdown">
             <a
               href="#"
@@ -148,20 +133,14 @@
               >
             </div>
           </div>
+          <a href="{% url 'events' %}" class="nav-item nav-link">Events</a>
+          <a href="{% url 'patrols' %}" class="nav-item nav-link">Patrols</a>
+          <a href="{% url 'crew_leaders' %}" class="nav-item nav-link"
+            >Crew Leaders</a
+          >
           <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
         </div>
-        <a
-          href="https://htmlcodex.com/downloading/?item=2478"
-          class="btn py-4 px-lg-5 d-none d-lg-block"
-          style="background-color: #ff1d8d; color: aliceblue"
-        >
-          <b>Donate</b>
-        </a>
-        <a
-          href="https://htmlcodex.com/downloading/?item=2478"
-          class="btn btn-primary py-4 px-lg-5 d-none d-lg-block"
-          >Join us<i class="fa fa-arrow-right ms-3"></i
-        ></a>
+        <div><!-- login moved to footer per design --></div>
       </div>
     </nav>
     <!-- Navbar End -->
@@ -193,16 +172,27 @@
               <i class="fa fa-phone-alt me-3"></i>+2547xxxxxxxx
             </p>
             <p class="mb-2">
-              <i class="fa fa-envelope me-3"></i>contact@vilakazi.ke
+              <i class="fa fa-envelope me-3"></i>villakazijasiriscouts@gmail.com
             </p>
           </div>
           <div class="col-lg-3 col-md-6">
             <h4 class="text-light mb-4">Quick Links</h4>
-            <a class="btn btn-link" href="">About Us</a>
-            <a class="btn btn-link" href="">Contact Us</a>
+            <a class="btn btn-link" href="{% url 'about' %}">About Us</a>
+            <a class="btn btn-link" href="{% url 'contact' %}">Contact Us</a>
             <a class="btn btn-link" href="">Donate</a>
-            <a class="btn btn-link" href="">Join Us</a>
+            <a class="btn btn-link" href="{% url 'contact' %}">Join Us</a>
             <a class="btn btn-link" href="">Portal member</a>
+            <div class="mt-3">
+              {% if user.is_authenticated %}
+              <a class="btn btn-link text-white" href="{% url 'logout' %}"
+                >Logout</a
+              >
+              {% else %}
+              <a class="btn btn-link text-white" href="{% url 'login' %}"
+                >Admin Login</a
+              >
+              {% endif %}
+            </div>
           </div>
           <div class="col-lg-3 col-md-6">
             <h4 class="text-light mb-4"></h4>
@@ -226,17 +216,23 @@
             </form>
             <h6 class="text-white mt-4 mb-3">Follow Us</h6>
             <div class="d-flex pt-2">
-              <a class="btn btn-square btn-outline-light me-1" href=""
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a class="btn btn-square btn-outline-light me-1" href=""
+              <a
+                class="btn btn-square btn-outline-light me-1"
+                href="https://www.facebook.com/villakazi"
+                target="_blank"
                 ><i class="fab fa-facebook-f"></i
               ></a>
-              <a class="btn btn-square btn-outline-light me-1" href=""
-                ><i class="fab fa-youtube"></i
+              <a
+                class="btn btn-square btn-outline-light me-1"
+                href="https://www.instagram.com/villakazi"
+                target="_blank"
+                ><i class="fab fa-instagram"></i
               ></a>
-              <a class="btn btn-square btn-outline-light me-0" href=""
-                ><i class="fab fa-linkedin-in"></i
+              <a
+                class="btn btn-square btn-outline-light me-0"
+                href="https://www.tiktok.com"
+                target="_blank"
+                ><i class="fab fa-tiktok"></i
               ></a>
             </div>
           </div>

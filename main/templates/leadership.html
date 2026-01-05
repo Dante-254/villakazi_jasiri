@@ -1,31 +1,17 @@
-{% extends "index.html" %}
-{% block title %} Leadership/Crew Council {% endblock %}
-{% load static %}
-
-{% block content %}
-<!-- Leadership Start -->
-<div class="container-fluid py-6">
-    <div class="container">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-            <h6 class="text-primary text-uppercase mb-2">Structure</h6>
-            <h1 class="display-6 mb-4">Leadership/Crew Council</h1>
-        </div>
-        <div class="row g-5">
-            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="h-100">
-                    <p>
-                        Our leadership structure is built on the principles of servant leadership and democratic 
-                        decision-making. The Crew Council consists of elected members who represent the interests 
-                        of all crew members and work together to plan activities and make important decisions.
-                    </p>
-                    <p class="mb-4">
-                        The leadership team is responsible for organizing events, managing resources, and ensuring 
-                        that all members have opportunities to grow and contribute to the crew's mission.
-                    </p>
-                </div>
-            </div>
-        </div>
+{% extends "index.html" %} {% block title %} Leadership/Crew Council {% endblock
+%} {% load static %} {% block content %}
+<div class="container py-6">
+  <div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+      <h3>This page has been removed</h3>
+      <p>
+        Leadership information has been moved to the About and Crew Leaders
+        pages.
+      </p>
+      <a href="{% url 'crew_leaders' %}" class="btn btn-primary"
+        >View Crew Leaders</a
+      >
     </div>
+  </div>
 </div>
-<!-- Leadership End -->
 {% endblock %}

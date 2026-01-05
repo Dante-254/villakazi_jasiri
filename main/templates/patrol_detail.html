@@ -1,0 +1,124 @@
+{% extends "index.html" %} {% block title %} {{ patrol.name }} Patrol {% endblock %} {% load static %} {% block content %}
+<!-- Patrol Detail Start -->
+<div class="container-fluid py-6">
+  <div class="container">
+    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+      <h6 class="text-primary text-uppercase mb-2">Patrol</h6>
+      <h1 class="display-6 mb-4">{{ patrol.name }} Patrol</h1>
+      {% if patrol.description %}
+      <p class="lead">{{ patrol.description }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Patrol Leaders & Roles Start -->
+    {% for role_label, role_members in grouped_members.items %} {% if role_members.exists %}
+    <div class="mb-6">
+      <h3 class="text-center mb-4">{{ role_label }}</h3>
+      <div class="row g-4 justify-content-center">
+        {% for member in role_members %}
+        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+          <div class="team-item position-relative">
+            <div class="position-relative">
+              {% if member.image %}
+              <img
+                class="img-fluid"
+                src="{{ member.image.url }}"
+                alt="{{ member.name }}"
+                style="height: 300px; object-fit: cover"
+              />
+              {% else %}
+              <center class="mb-5 py-5">
+                <i class="fa bi-person fa-10x text-primary"></i>
+              </center>
+              {% endif %}
+            </div>
+            <div class="bg-light text-center p-4">
+              <h5 class="mt-2">{{ member.name }}</h5>
+              {% if member.role %}
+              <span>{{ member.get_role_display }}</span>
+              {% endif %} {% if member.bio %}
+              <p class="small mt-2 text-muted">
+                {{ member.bio|truncatewords:10 }}
+              </p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %} {% endfor %}
+    <!-- Patrol Leaders & Roles End -->
+
+    <!-- Patrol Members Start -->
+    {% if user.is_staff %}
+    <div class="text-end mb-3">
+      <a href="{% url 'create_patrol_member' %}" class="btn btn-success"
+        >Add Patrol Member</a
+      >
+    </div>
+    {% endif %} {% if grouped_members %}
+    <div class="mt-6">
+      <h3 class="text-center mb-4">Patrol Members</h3>
+      <div class="row g-4 justify-content-center">
+        {% for role_label, members in grouped_members.items %} {% for member in members %}
+        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+          <div class="team-item position-relative">
+            <div class="position-relative">
+              {% if member.image %}
+              <img
+                class="img-fluid"
+                src="{{ member.image.url }}"
+                alt="{{ member.name }}"
+                style="height: 300px; object-fit: cover"
+              />
+              {% else %}
+              <center class="mb-5 py-5">
+                <i class="fa bi-person fa-10x text-primary"></i>
+              </center>
+              {% endif %}
+            </div>
+            <div class="bg-light text-center p-4">
+              <h5 class="mt-2">{{ member.name }}</h5>
+              {% if member.role %}
+              <span>{{ member.get_role_display }}</span>
+              {% endif %} {% if member.bio %}
+              <p class="small mt-2 text-muted">
+                {{ member.bio|truncatewords:10 }}
+              </p>
+              {% endif %} {% if user.is_staff %}
+              <div class="mt-2">
+                <a
+                  href="{% url 'edit_patrol_member' member.id %}"
+                  class="btn btn-sm btn-primary"
+                  >Edit</a
+                >
+                <a
+                  href="{% url 'delete_patrol_member' member.id %}"
+                  class="btn btn-sm btn-danger"
+                  >Delete</a
+                >
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %} {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+      <p class="text-muted">No members added to this patrol yet.</p>
+    </div>
+    {% endif %}
+    <!-- Patrol Members End -->
+
+    <div class="text-center mt-5">
+      <a href="{% url 'patrols' %}" class="btn btn-primary"
+        >Back to All Patrols</a
+      >
+    </div>
+  </div>
+</div>
+<!-- Patrol Detail End -->
+{% endblock %}

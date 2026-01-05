@@ -1,0 +1,80 @@
+{% extends "index.html" %} {% block title %} Crew Leaders {% endblock %} {% load
+static %} {% block content %}
+<!-- Crew Leaders Start -->
+<div class="container-fluid py-6">
+  <div class="container">
+    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+      <h6 class="text-primary text-uppercase mb-2">Crew</h6>
+      <h1 class="display-6 mb-4">Crew Leaders</h1>
+    </div>
+
+    {% if user.is_staff %}
+    <div class="text-end mb-3">
+      <a href="{% url 'create_crew_leader' %}" class="btn btn-success"
+        >Add Crew Leader</a
+      >
+    </div>
+    {% endif %} {% if crew_leaders %}
+    <div class="row g-4 justify-content-center">
+      {% for leader in crew_leaders %}
+      <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="team-item position-relative">
+          <div class="position-relative">
+            {% if leader.image %}
+            <img
+              class="img-fluid"
+              src="{{ leader.image.url }}"
+              alt="{{ leader.name }}"
+              style="height: 300px; object-fit: cover"
+            />
+            {% else %}
+            <center class="mb-5 py-5">
+              <i class="fa bi-person fa-10x text-primary"></i>
+            </center>
+            {% endif %}
+          </div>
+          <div class="bg-light text-center p-4">
+            <h5 class="mt-2">{{ leader.name }}</h5>
+            <span>{{ leader.position }}</span>
+            {% if leader.bio %}
+            <p class="small mt-2 text-muted">
+              {{ leader.bio|truncatewords:12 }}
+            </p>
+            {% endif %}
+            <div class="mt-2">
+              {% if leader.email %}
+              <div>
+                <a href="mailto:{{ leader.email }}">{{ leader.email }}</a>
+              </div>
+              {% endif %} {% if leader.phone %}
+              <div>{{ leader.phone }}</div>
+              {% endif %}
+            </div>
+            {% if user.is_staff %}
+            <div class="mt-3">
+              <a
+                href="{% url 'edit_crew_leader' leader.id %}"
+                class="btn btn-sm btn-primary"
+                >Edit</a
+              >
+              <a
+                href="{% url 'delete_crew_leader' leader.id %}"
+                class="btn btn-sm btn-danger"
+                >Delete</a
+              >
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+      <p class="text-muted">No crew leaders added yet.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<!-- Crew Leaders End -->
+{% endblock %}

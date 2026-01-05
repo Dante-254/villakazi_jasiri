@@ -1,0 +1,14 @@
+{% extends "index.html" %} {% block title %}Patrol Form{% endblock %} {% block
+content %}
+<div class="container py-6">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h3>{% if patrol %}Edit{% else %}Create{% endif %} Patrol</h3>
+      <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button class="btn btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
