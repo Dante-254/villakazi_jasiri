@@ -1,75 +1,68 @@
+import logging
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
-class SupabaseAuthBackend:
-    """Authenticate users against Supabase Auth and map them to Django Users.
+logger = logging.getLogger(__name__)
 
-    Behavior:
-    - Accepts `username_or_email` and `password` (the login form accepts username or email).
-    - If a username (no '@') is provided, list Supabase users and find one whose user_metadata.username matches.
-    - Uses the Supabase client to sign in with email/password.
-    - On success, get or create a Django User with username=email and set `is_staff` if the Supabase user has metadata role='admin' or 'staff'.
-    """
+class SupabaseAuthBackend:
+    """Authenticate users against Supabase Auth and map them to Django Users."""
 
     def authenticate(self, request, username=None, password=None):
         try:
             from supabase import create_client
-        except Exception:
+        except ImportError:
             raise ImproperlyConfigured('supabase package is required for SupabaseAuthBackend')
 
         supabase_url = getattr(settings, 'SUPABASE_URL', None)
         supabase_key = getattr(settings, 'SUPABASE_KEY', None)
         if not supabase_url or not supabase_key:
+            logger.warning("Supabase URL or key not set in settings")
             return None
 
         supabase = create_client(supabase_url, supabase_key)
 
         # Determine email
-        username_or_email = username
         email = None
-        if username_or_email and '@' in username_or_email:
-            email = username_or_email
+        if username and '@' in username:
+            email = username
         else:
-            # try to find a user with matching username in user_metadata
-            try:
-                # Requires service role key
-                users_list = supabase.auth.admin.list_users()
-                for u in users_list.data:
-                    meta = u.get('user_metadata') or {}
-                    if meta.get('username') == username_or_email or u.get('email') == username_or_email:
-                        email = u.get('email')
-                        break
-            except Exception:
-                # if admin list_users not available, fallback to assume username is an email
-                email = username_or_email
+            # Only attempt username lookup if using a service_role key
+            if 'service_role' in supabase_key.lower():
+                try:
+                    users_list = supabase.auth.admin.list_users()
+                    for u in users_list.data:
+                        meta = u.get('user_metadata') or {}
+                        if meta.get('username') == username or u.get('email') == username:
+                            email = u.get('email')
+                            break
+                except Exception as e:
+                    logger.warning(f"Failed to list users for username lookup: {e}")
+                    email = username  # fallback to assuming it's an email
+            else:
+                email = username  # anon key, just treat as email
 
         if not email:
+            logger.warning(f"Could not determine email for username '{username}'")
             return None
 
         # Sign in with password
         try:
-            # Using supabase.auth.sign_in_with_password (newer API)
             resp = supabase.auth.sign_in_with_password({"email": email, "password": password})
+            # Supabase response can vary by client version
             user_data = getattr(resp, 'user', None) if hasattr(resp, 'user') else resp.get('user') if isinstance(resp, dict) else None
-            if not user_data:
-                # older client
-                json_data = getattr(resp, 'json', None)
-                if json_data:
-                    user_data = json_data().get('user')
-        except Exception:
+        except Exception as e:
+            logger.warning(f"Supabase sign-in failed for {email}: {e}")
             return None
 
-        if not user_data:
+        if not user_data or not user_data.get('email'):
+            logger.warning(f"Supabase authentication returned no user for {email}")
             return None
 
         user_email = user_data.get('email')
-        if not user_email:
-            return None
-
         django_user, created = User.objects.get_or_create(username=user_email, defaults={'email': user_email})
 
-        # Set staff status based on metadata (if present)
+        # Set staff/superuser based on metadata
         meta = user_data.get('user_metadata') or {}
         role = meta.get('role') or meta.get('roles')
         if role in ('admin', 'staff', 'superuser'):

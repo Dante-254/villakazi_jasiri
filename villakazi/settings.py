@@ -165,5 +165,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Authentication backends - keep Django backend as fallback
 AUTHENTICATION_BACKENDS = [
     'main.auth_backends.SupabaseAuthBackend',
-]  # Supabase replaces Django auth as the primary authentication provider
+    'django.contrib.auth.backends.ModelBackend',
+]
 

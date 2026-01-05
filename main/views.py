@@ -145,7 +145,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             # Create Django session
-            login(request, user, backend='main.auth_backends.SupabaseAuthBackend')
+            login(request, user)
             messages.success(request, 'Logged in successfully via Supabase')
             if user.is_staff:
                 return redirect('/admin/')
