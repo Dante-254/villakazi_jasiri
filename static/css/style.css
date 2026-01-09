@@ -185,7 +185,7 @@
 }
 
 .page-header {
-    background: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .75)), center center no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .75)), url("../img/image-12.jpg"), center center no-repeat;
     background-size: cover;
 }
 

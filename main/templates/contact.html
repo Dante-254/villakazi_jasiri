@@ -1,38 +1,63 @@
 {% extends "index.html" %} {% block title %} Contact {% endblock %} {% load
-static %} {% block content %}
+static %} 
+{% block content %}
+<!-- Page Header Start -->
+{% include 'singlepageheader.html' with h6title="Contact Us" h1title="Get In Touch" %}
+<!-- Page Header End -->
+
 <!-- Contact Start -->
-<div class="container-fluid py-6">
+<div class="container-xxl">
   <div class="container">
-    <div
-      class="text-center mx-auto mb-5 wow fadeInUp"
-      data-wow-delay="0.1s"
-      style="max-width: 500px"
-    >
-      <h6 class="text-primary text-uppercase mb-2">Contact Us</h6>
-      <h1 class="display-6 mb-4">Get In Touch</h1>
-    </div>
     <div class="row g-5">
-      <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="h-100">
-          <p>
-            We'd love to hear from you! Reach out to us through any of the
-            following channels.
-          </p>
-          <div class="row g-4 mt-2">
-            <div class="col-md-4">
-              <div class="d-flex align-items-center">
-                <div
-                  class="flex-shrink-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                  style="width: 60px; height: 60px"
-                >
-                  <i class="fa fa-map-marker-alt"></i>
-                </div>
-                <div class="ms-3">
-                  <h5>Location</h5>
-                  <p class="mb-0">Kwa D.O, Kasarani, Nairobi</p>
-                </div>
+      <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 450px;">
+        <div class="position-relative h-100">
+            <iframe class="position-relative w-100 h-100"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d498.6135590305158!2d36.90228396719987!3d-1.2236402938537285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2ske!4v1767992647523!5m2!1sfr!2ske"
+            frameborder="0" style="min-height: 450px; border:0;" allowfullscreen="" aria-hidden="false"
+            tabindex="0"></iframe>
+        </div>
+      </div>
+      <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+          <h6 class="text-primary text-uppercase mb-2">Contact Us</h6>
+          <h1 class="display-6 mb-4">If You Have Any Query, Please Contact Us</h1>
+          <h4 class="mb-4">
+            <p>
+              We'd love to hear from you! Reach out to us through any of the
+              following channels.
+            </p>
+          </h4>
+          <form>
+              <div class="row g-3">
+                  <div class="col-md-6">
+                      <div class="form-floating">
+                          <input type="text" class="form-control border-0 bg-light" id="name" placeholder="Your Name">
+                          <label for="name">Your Name</label>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-floating">
+                          <input type="email" class="form-control border-0 bg-light" id="email" placeholder="Your Email">
+                          <label for="email">Your Email</label>
+                      </div>
+                  </div>
+                  <div class="col-12">
+                      <div class="form-floating">
+                          <input type="text" class="form-control border-0 bg-light" id="subject" placeholder="Subject">
+                          <label for="subject">Subject</label>
+                      </div>
+                  </div>
+                  <div class="col-12">
+                      <div class="form-floating">
+                          <textarea class="form-control border-0 bg-light" placeholder="Leave a message here" id="message" style="height: 150px"></textarea>
+                          <label for="message">Message</label>
+                      </div>
+                  </div>
+                  <div class="col-12">
+                      <button class="btn btn-primary py-3 px-5" type="submit">Send Message</button>
+                  </div>
               </div>
-            </div>
+          </form>
+          <div class="row g-4 mt-2">
             <div class="col-md-4">
               <div class="d-flex align-items-center">
                 <div
@@ -43,7 +68,21 @@ static %} {% block content %}
                 </div>
                 <div class="ms-3">
                   <h5>Phone</h5>
-                  <p class="mb-0">+2547xxxxxxxx</p>
+                  <a href="tel:+2547xxxxxxxx" class="text-dark mb-0">+2547xxxxxxxx</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex align-items-center">
+                <div
+                  class="flex-shrink-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                  style="width: 60px; height: 60px"
+                >
+                  <i class="fa bi-whatsapp"></i>
+                </div>
+                <div class="ms-3">
+                  <h5>WhatsApp</h5>
+                  <a href="whatsapp.me/254701794047" class="text-dark mb-0">+2547xxxxxxxx</a>
                 </div>
               </div>
             </div>
@@ -57,12 +96,11 @@ static %} {% block content %}
                 </div>
                 <div class="ms-3">
                   <h5>Email</h5>
-                  <p class="mb-0">villakazijasiriscouts@gmail.com</p>
+                  <a href="mailto:villakazijasiriscouts@gmail.com" class="text-dark mb-0">villakazijasiriscouts@gmail.com</a>
                 </div>
               </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>

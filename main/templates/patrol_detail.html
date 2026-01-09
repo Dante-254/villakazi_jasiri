@@ -1,15 +1,11 @@
 {% extends "index.html" %} {% block title %} {{ patrol.name }} Patrol {% endblock %} {% load static %} {% block content %}
-<!-- Patrol Detail Start -->
-<div class="container-fluid py-6">
-  <div class="container">
-    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
-      <h6 class="text-primary text-uppercase mb-2">Patrol</h6>
-      <h1 class="display-6 mb-4">{{ patrol.name }} Patrol</h1>
-      {% if patrol.description %}
-      <p class="lead">{{ patrol.description }}</p>
-      {% endif %}
-    </div>
+<!-- Page Header Start -->
+{% include 'singlepageheader.html' with h6title="Patrol" h1title="{{ patrol.name }} Patrol" %}
+<!-- Page Header End -->
 
+<!-- Patrol Detail Start -->
+<div class="container-fluid">
+  <div class="container">
     <!-- Patrol Leaders & Roles Start -->
     {% for role_label, role_members in grouped_members.items %} {% if role_members.exists %}
     <div class="mb-6">

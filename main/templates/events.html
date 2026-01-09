@@ -1,14 +1,10 @@
 {% extends "index.html" %} {% block title %}Events{% endblock %} {% block content %}
-<div class="container-fluid py-6">
+<!-- Page Header Start -->
+{% include 'singlepageheader.html' with h6title="Events" h1title="All Events" %}
+<!-- Page Header End -->
+
+<div class="container-fluid">
   <div class="container">
-    <div class="text-center mx-auto mb-5" style="max-width: 500px">
-      <h6 class="text-primary text-uppercase mb-2">Events</h6>
-      <h1 class="display-6 mb-4">All Events</h1>
-      <p>
-        Browse our featured and past events; click an event to view its gallery
-        and photos.
-      </p>
-    </div>
     {% if events %}
     <div class="row g-4">
       {% for event in events %}

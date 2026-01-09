@@ -1,13 +1,13 @@
 {% extends "index.html" %} {% block title %} Crew Leaders {% endblock %} {% load
 static %} {% block content %}
-<!-- Crew Leaders Start -->
-<div class="container-fluid py-6">
-  <div class="container">
-    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
-      <h6 class="text-primary text-uppercase mb-2">Crew</h6>
-      <h1 class="display-6 mb-4">Crew Leaders</h1>
-    </div>
 
+<!-- Page Header Start -->
+{% include 'singlepageheader.html' with h6title="Crew" h1title="Crew Leaders" %}
+<!-- Page Header End -->
+
+<!-- Crew Leaders Start -->
+<div class="container-fluid">
+  <div class="container">
     {% if user.is_staff %}
     <div class="text-end mb-3">
       <a href="{% url 'create_crew_leader' %}" class="btn btn-success"
