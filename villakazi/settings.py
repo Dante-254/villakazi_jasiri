@@ -146,7 +146,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Supabase / external auth settings (if using Supabase Auth)
 SUPABASE_URL = os.environ.get('SUPABASE_URL')
-SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
+SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_KEY") 
+
 
 # Optional database connection vars (set these in your environment when switching to Supabase)
 # SUPABASE_DB_HOST, SUPABASE_DB_NAME, SUPABASE_DB_USER, SUPABASE_DB_PASSWORD, SUPABASE_DB_PORT
@@ -167,4 +169,3 @@ AUTHENTICATION_BACKENDS = [
     'main.auth_backends.SupabaseAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
-

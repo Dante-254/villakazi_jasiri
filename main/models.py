@@ -1,7 +1,13 @@
 from django.db import models
 from django.utils import timezone
 
-# Create your models here.
+
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.conf import settings
+import uuid
+
+
 
 class Event(models.Model):
     title = models.CharField(max_length=200)
@@ -12,6 +18,7 @@ class Event(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_featured = models.BooleanField(default=False, help_text="Featured events appear on home page")
+
     
     class Meta:
         ordering = ['-date']
@@ -24,6 +31,7 @@ class GalleryImage(models.Model):
     image = models.ImageField(upload_to='gallery/')
     caption = models.CharField(max_length=200, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    
     
     class Meta:
         ordering = ['-uploaded_at']
@@ -65,6 +73,7 @@ class PatrolMember(models.Model):
     image = models.ImageField(upload_to='patrol_members/', blank=True, null=True)
     added_at = models.DateTimeField(auto_now_add=True)
     
+    
     class Meta:
         ordering = ['name']
     
@@ -83,7 +92,7 @@ class CrewLeader(models.Model):
     tiktok_url = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     class Meta:
         ordering = ['name']
 

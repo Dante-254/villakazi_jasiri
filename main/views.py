@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from collections import OrderedDict
 from .models import Event, GalleryImage, Patrol, PatrolMember, CrewLeader
+from supabase import create_client
+import jwt
 
 # Create your views here.
 from django.conf import settings
@@ -137,53 +139,72 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def login_view(request):
-    # Supabase-backed login (username or email)
+    print("LOGIN VIEW HIT", request.method)
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email = request.POST.get('username')
         password = request.POST.get('password')
-        # Use the SupabaseAuthBackend via Django authenticate API
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            # Create Django session
-            login(request, user)
-            messages.success(request, 'Logged in successfully via Supabase')
-            if user.is_staff:
-                return redirect('/admin/')
-            return redirect('home')
-        else:
-            messages.error(request, 'Invalid credentials')
+
+        supabase = create_client(
+            settings.SUPABASE_URL,
+            settings.SUPABASE_ANON_KEY,
+            settings.SUPABASE_SERVICE_KEY
+        )
+
+        try:
+            res = supabase.auth.sign_in_with_password({
+                "email": email,
+                "password": password
+            })
+        except Exception:
+            messages.error(request, "Invalid credentials")
             return redirect('login')
+
+        session = res.session
+        user_info = res.user
+
+        if not session or not user_info:
+            messages.error(request, "Login failed")
+            return redirect('login')
+
+        # Verify JWT
+        try:
+            payload = jwt.decode(...)
+        except jwt.InvalidTokenError:
+            messages.error(request, "Invalid session token")
+        return redirect('login')
+
+
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+
+        user, created = User.objects.get_or_create(
+            supabase_uid=user_info.id,
+            defaults={
+                    "username": email,
+                    "email": email,
+                    "is_active": True,
+            }
+        )
+
+        if not user.is_active:
+            user.is_active = True
+            user.save()
+
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        messages.success(request, "Logged in successfully")
+
+        if user.is_staff:
+            return redirect('/admin/')
+        return redirect('home')
+
     return render(request, 'login.html')
 
 
 def logout_view(request):
-    """Sign out from Supabase (if possible) then clear Django session.
-
-    Supabase server-side sign_out may be best-effort; we catch and log errors
-    without preventing the Django logout to ensure the user is logged out locally.
-    """
-    try:
-        from supabase import create_client
-        import logging
-        supabase = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
-        # Try to sign out; if this fails, log and continue
-        try:
-            supabase.auth.sign_out()
-        except Exception as e:
-            logging.exception("Supabase sign_out failed: %s", e)
-    except Exception as e:
-        # If the Supabase client can't be created, log and continue
-        import logging
-        logging.exception("Failed to initialize Supabase client for sign_out: %s", e)
-
-    # Clear Django session
     logout(request)
-    try:
-        messages.info(request, 'Logged out')
-    except Exception:
-        # Messages framework or middleware may not be present in tests
-        pass
+    messages.info(request, 'Logged out')
     return redirect('home')
+
 
 
 # CrewLeader CRUD (admin-only for now via is_staff)
