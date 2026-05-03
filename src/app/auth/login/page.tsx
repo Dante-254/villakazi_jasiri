@@ -1,48 +1,64 @@
 "use client";
+
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [message, setMessage] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const submit = (e: React.FormEvent) => {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    // Placeholder: mock account verification by a JSL
-    setMessage(
-      "Your request has been submitted — an advisor must verify your account."
-    );
-  };
+    setError(null);
+    setLoading(true);
+
+    const supabase = createClient();
+    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (authError) {
+      setError(authError.message);
+      setLoading(false);
+      return;
+    }
+
+    if (data?.session) {
+      router.push("/admin");
+    } else {
+      setError("Failed to sign in");
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="max-w-md mx-auto px-6 py-16">
-      <h1 className="text-2xl font-semibold">Members Login</h1>
-      <p className="mt-2 text-sm text-gray-600">
-        Members-only login. Accounts must be verified by a Jasiri Scout Leader
-        (JSL).
-      </p>
-
+      <h1 className="text-2xl font-semibold">Admin Login</h1>
+      <p className="mt-2 text-sm text-gray-600">Sign in with Supabase account credentials.</p>
       <form onSubmit={submit} className="mt-6 grid gap-3">
+        {error && <div className="rounded bg-red-100 p-3 text-red-700">{error}</div>}
         <input
           className="p-3 border rounded-md"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Your crew email"
+          placeholder="Email"
+          required
         />
         <input
           className="p-3 border rounded-md"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          placeholder="Invite / verification code (if any)"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          required
         />
-        <button className="px-4 py-2 bg-green-700 text-white rounded-md">
-          Request Access
+        <button type="submit" disabled={loading} className="px-4 py-2 bg-green-700 text-white rounded-md">
+          {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
-
-      {message && (
-        <div className="mt-4 p-3 bg-neutral-100 rounded-md">{message}</div>
-      )}
     </div>
   );
 }

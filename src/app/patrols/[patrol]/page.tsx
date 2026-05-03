@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PATROLS from "../../../data/patrols";
+import { getSupabaseServer } from "@/lib/supabaseServer";
 
 interface Props {
   params: { patrol: string } | Promise<{ patrol: string }>;
@@ -8,7 +9,15 @@ interface Props {
 export default async function PatrolPage({ params }: Props) {
   const resolved = await params;
   const id = resolved.patrol;
-  const patrol = PATROLS.find((p) => p.id === id);
+  const supabase = getSupabaseServer();
+
+  const { data: patrols, error } = await supabase
+    .from("patrols")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  const patrol = patrols || PATROLS.find((p) => p.id === id);
   if (!patrol)
     return (
       <div className="max-w-4xl mx-auto px-6 py-16 text-center">

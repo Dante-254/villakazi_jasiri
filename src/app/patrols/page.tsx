@@ -1,7 +1,16 @@
 import Link from "next/link";
 import PATROLS from "../../data/patrols";
+import { getSupabaseServer } from "@/lib/supabaseServer";
 
-export default function PatrolsIndex() {
+export default async function PatrolsIndex() {
+  const supabase = getSupabaseServer();
+  const { data: patrolsData, error } = await supabase
+    .from("patrols")
+    .select("*")
+    .order("name", { ascending: true });
+
+  const patrols = Array.isArray(patrolsData) && patrolsData.length ? patrolsData : PATROLS;
+
   return (
     <div className="max-w-5xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-semibold">Patrols</h1>
