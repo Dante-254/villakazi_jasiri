@@ -6,12 +6,12 @@ function hasAdminCookie(req: Request) {
   return cookieHeader.includes("sb_admin_token");
 }
 
-export async function PUT(req: Request, context: { params: { id: string } }) {
+export async function PUT(req: Request, context: { params: Promise<{ id: string }> }) {
   if (!hasAdminCookie(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const id = context.params.id;
+  const { id } = await context.params;
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
   try {
@@ -46,12 +46,12 @@ export async function PUT(req: Request, context: { params: { id: string } }) {
   }
 }
 
-export async function DELETE(req: Request, context: { params: { id: string } }) {
+export async function DELETE(req: Request, context: { params: Promise<{ id: string }> }) {
   if (!hasAdminCookie(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const id = context.params.id;
+  const { id } = await context.params;
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
   try {

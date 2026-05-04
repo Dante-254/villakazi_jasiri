@@ -6,13 +6,13 @@ function hasAdminCookie(req: Request) {
   return cookieHeader.includes("sb_admin_token");
 }
 
-export async function PUT(req: Request, context: { params: { slug: string } }) {
+export async function PUT(req: Request, context: { params: Promise<{ slug: string }> }) {
   try {
     if (!hasAdminCookie(req)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { slug } = context.params;
+    const { slug } = await context.params;
     if (!slug) return NextResponse.json({ error: "Missing slug" }, { status: 400 });
 
     const body = await req.json();
@@ -49,12 +49,12 @@ export async function PUT(req: Request, context: { params: { slug: string } }) {
   }
 }
 
-export async function DELETE(req: Request, context: { params: { slug: string } }) {
+export async function DELETE(req: Request, context: { params: Promise<{ slug: string }> }) {
   try {
     if (!hasAdminCookie(req)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const { slug } = context.params;
+    const { slug } = await context.params;
     if (!slug) return NextResponse.json({ error: "Missing slug" }, { status: 400 });
 
     const supabase = getSupabaseServer();

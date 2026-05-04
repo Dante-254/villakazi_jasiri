@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary";
 
-export async function POST(req: Request, context: { params: { slug: string } }) {
+export async function POST(req: Request, context: { params: Promise<{ slug: string }> }) {
   try {
     // Basic gate: require sb_admin_token cookie to exist
     const cookieHeader = req.headers.get("cookie") || "";
@@ -9,7 +9,7 @@ export async function POST(req: Request, context: { params: { slug: string } }) 
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { slug } = context.params;
+    const { slug } = await context.params;
     if (!slug) return NextResponse.json({ error: "Missing slug" }, { status: 400 });
 
     const body = await req.json();

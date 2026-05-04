@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import cloudinary from "../../../../lib/cloudinary";
 
-export async function GET(req: Request, context: { params: { event: string } }) {
+export async function GET(req: Request, context: { params: Promise<{ event: string }> }) {
   try {
-    const { event } = context.params;
+    const { event } = await context.params;
     if (!event) return NextResponse.json({ error: "Missing event parameter" }, { status: 400 });
 
     // Cloudinary tag lookup - return images/videos (resource_type: image|video)

@@ -24,7 +24,7 @@ export default async function EventDetail({ params }: { params: { slug: string }
       )}
 
       <div className="flex gap-3">
-        <Link href="/gallery?event=" + event.slug className="px-4 py-2 border rounded">Open gallery</Link>
+        <Link href={`/gallery?event=${event.slug}`} className="px-4 py-2 border rounded">Open gallery</Link>
         <Link href="/events" className="px-4 py-2 bg-neutral-100 rounded">Back to events</Link>
       </div>
     </div>

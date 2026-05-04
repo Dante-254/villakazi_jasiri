@@ -15,7 +15,6 @@ export default async function EditCrewLeaderPage({ params }: { params: { id: str
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
-      {/* @ts-expect-error Server -> Client */}
       <CrewLeaderForm initialData={data} leaderId={data.id} />
     </div>
   );
