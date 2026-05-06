@@ -1,14 +1,24 @@
 import { getSupabaseServer } from "@/lib/supabaseServer";
 import Link from "next/link";
 
-export default async function EventDetail({ params }: { params: { slug: string } }) {
+export default async function EventDetail({
+  params,
+}: {
+  params: { slug: string } | Promise<{ slug: string }>;
+}) {
+  const resolvedParams = await params;
   const supabase = getSupabaseServer();
-  const { data, error } = await supabase.from("events").select("*").eq("slug", params.slug).limit(1).single();
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("slug", resolvedParams.slug)
+    .limit(1)
+    .single();
   if (error || !data) {
     return (
       <div className="max-w-4xl mx-auto px-6 py-16">
         <h1 className="text-2xl font-semibold">Event not found</h1>
-        <p className="mt-4 text-gray-600">We couldn't find the event you requested.</p>
+        <p className="mt-4 text-gray-600">We could not find the event you requested.</p>
       </div>
     );
   }
