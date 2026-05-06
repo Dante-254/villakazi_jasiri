@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Props = { initialData?: any; eventId?: string | null };
 
@@ -14,11 +15,15 @@ function slugify(s: string) {
 export default function EventForm({ initialData, eventId }: Props) {
   const [title, setTitle] = useState(initialData?.title || "");
   const [slug, setSlug] = useState(initialData?.slug || "");
-  const [description, setDescription] = useState(initialData?.description || "");
-  const [date, setDate] = useState(initialData?.date ? initialData.date.split("T")[0] : "");
-  const [image_url, setImageUrl] = useState(initialData?.image_url || "");
-  const [is_featured, setIsFeatured] = useState(!!initialData?.is_featured);
-  const [show_on_home, setShowOnHome] = useState(!!initialData?.show_on_home);
+  const [description, setDescription] = useState(
+    initialData?.description || "",
+  );
+  const [date, setDate] = useState(
+    initialData?.date ? initialData.date.split("T")[0] : "",
+  );
+  const [imageUrl, setImageUrl] = useState(initialData?.image_url || "");
+  const [isFeatured, setIsFeatured] = useState(!!initialData?.is_featured);
+  const [showOnHome, setShowOnHome] = useState(!!initialData?.show_on_home);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -27,7 +32,7 @@ export default function EventForm({ initialData, eventId }: Props) {
     if (!slug && title) {
       setSlug(slugify(title));
     }
-  }, [title]);
+  }, [title, slug]);
 
   useEffect(() => {
     if (initialData) {
@@ -52,7 +57,15 @@ export default function EventForm({ initialData, eventId }: Props) {
     }
 
     try {
-      const payload = { title, slug, description, date, image_url, is_featured, show_on_home };
+      const payload = {
+        title,
+        slug,
+        description,
+        date,
+        image_url: imageUrl,
+        is_featured: isFeatured,
+        show_on_home: showOnHome,
+      };
       let res: Response;
       if (eventId) {
         res = await fetch(`/api/admin/events/${eventId}`, {
@@ -93,51 +106,145 @@ export default function EventForm({ initialData, eventId }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-8">
-        <h1 className="text-2xl font-bold mb-4 text-center">{eventId ? "Edit Event" : "Create New Event"}</h1>
-        {error && <div className="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100 rounded">{error}</div>}
+      <div className="bg-white dark:bg-neutral-950 rounded-3xl border border-neutral-200/80 p-8 shadow-xl ring-1 ring-black/5 dark:border-neutral-800 dark:ring-white/5">
+        <h1 className="text-3xl font-bold mb-6 text-center tracking-tight">
+          {eventId ? "Edit Event" : "Create an Event"}
+        </h1>
+        {error && (
+          <div className="mb-5 rounded-3xl bg-red-100 px-4 py-3 text-sm text-red-800 dark:bg-red-900 dark:text-red-100">
+            {error}
+          </div>
+        )}
 
-        <form onSubmit={submit} className="space-y-5">
+        <form onSubmit={submit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-1">Event Title *</label>
-            <input type="text" value={title} onChange={(e)=>setTitle(e.target.value)} className="w-full px-4 py-2 border rounded-lg" />
+            <label className="block text-sm font-semibold mb-2">
+              Event Title *
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full rounded-3xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm shadow-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:focus:border-green-400 dark:focus:ring-green-900/30"
+            />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Slug</label>
-            <input type="text" value={slug} onChange={(e)=>setSlug(e.target.value)} className="w-full px-4 py-2 border rounded-lg" />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Description *</label>
-            <textarea value={description} onChange={(e)=>setDescription(e.target.value)} rows={4} className="w-full px-4 py-2 border rounded-lg" />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium mb-1">Date</label>
-              <input type="date" value={date} onChange={(e)=>setDate(e.target.value)} className="w-full px-4 py-2 border rounded-lg" />
+              <label className="block text-sm font-semibold mb-2">Slug</label>
+              <input
+                type="text"
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+                className="w-full rounded-3xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm shadow-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:focus:border-green-400 dark:focus:ring-green-900/30"
+              />
+              <p className="mt-2 text-xs text-neutral-500">
+                Used in URLs and upload tags. Auto-generated from the title if
+                left blank.
+              </p>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Image URL</label>
-              <input type="url" value={image_url} onChange={(e)=>setImageUrl(e.target.value)} className="w-full px-4 py-2 border rounded-lg" />
+              <label className="block text-sm font-semibold mb-2">Date</label>
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full rounded-3xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm shadow-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:focus:border-green-400 dark:focus:ring-green-900/30"
+              />
             </div>
           </div>
 
-          <div className="space-y-3 py-4 border-t">
-            <div className="flex items-center">
-              <input type="checkbox" checked={is_featured} onChange={(e)=>setIsFeatured(e.target.checked)} className="mr-3" />
-              <label className="text-sm">Feature as hero</label>
-            </div>
-            <div className="flex items-center">
-              <input type="checkbox" checked={show_on_home} onChange={(e)=>setShowOnHome(e.target.checked)} className="mr-3" />
-              <label className="text-sm">Show on home (card)</label>
-            </div>
+          <div>
+            <label className="block text-sm font-semibold mb-2">
+              Description *
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={5}
+              className="w-full rounded-3xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm shadow-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:focus:border-green-400 dark:focus:ring-green-900/30"
+            />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <button type="button" onClick={()=>router.back()} className="px-6 py-2 border rounded-lg">Cancel</button>
-            <button type="submit" disabled={loading} className="px-6 py-2 bg-green-600 text-white rounded-lg">{loading ? (eventId ? "Saving..." : "Creating...") : (eventId ? "Save" : "Create Event")}</button>
+          {imageUrl ? (
+            <div className="rounded-3xl border border-green-200 bg-green-50 p-4 dark:border-green-900/50 dark:bg-green-950/30">
+              <p className="text-sm font-semibold text-green-700 dark:text-green-300">
+                Current featured visual
+              </p>
+              <div className="mt-4 overflow-hidden rounded-3xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={imageUrl}
+                  alt="featured preview"
+                  className="h-56 w-full object-cover"
+                />
+              </div>
+            </div>
+          ) : null}
+
+          <div className="rounded-3xl border border-dashed border-neutral-300 bg-neutral-50 p-5 text-sm text-neutral-700 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-300">
+            <p className="font-semibold">Device-first uploads only</p>
+            <p className="mt-2">
+              Avoid manual image URLs. Upload event images and videos from your
+              device using the upload page after saving your event.
+            </p>
+            {eventId ? (
+              <Link
+                href={`/admin/events/${eventId}/upload`}
+                className="mt-4 inline-flex rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-500"
+              >
+                Open upload page
+              </Link>
+            ) : (
+              <p className="mt-4 text-xs text-neutral-500">
+                Create the event first, then upload assets from the admin event
+                upload page.
+              </p>
+            )}
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="flex items-center gap-3 rounded-3xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm shadow-sm dark:border-neutral-800 dark:bg-neutral-950">
+              <input
+                type="checkbox"
+                checked={isFeatured}
+                onChange={(e) => setIsFeatured(e.target.checked)}
+                className="h-4 w-4 rounded border-neutral-300 text-green-600 focus:ring-green-500"
+              />
+              <span>Feature as hero</span>
+            </label>
+            <label className="flex items-center gap-3 rounded-3xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm shadow-sm dark:border-neutral-800 dark:bg-neutral-950">
+              <input
+                type="checkbox"
+                checked={showOnHome}
+                onChange={(e) => setShowOnHome(e.target.checked)}
+                className="h-4 w-4 rounded border-neutral-300 text-green-600 focus:ring-green-500"
+              />
+              <span>Show on home</span>
+            </label>
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="rounded-3xl border border-neutral-300 px-6 py-3 text-sm font-semibold transition hover:border-neutral-400 dark:border-neutral-700"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-3xl bg-green-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-green-500 disabled:cursor-not-allowed disabled:bg-green-400"
+            >
+              {loading
+                ? eventId
+                  ? "Saving..."
+                  : "Creating..."
+                : eventId
+                  ? "Save event"
+                  : "Create event"}
+            </button>
           </div>
         </form>
       </div>

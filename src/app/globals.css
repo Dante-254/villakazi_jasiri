@@ -1,48 +1,93 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --font-geist-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-geist-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Helvetica Neue", monospace;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --border: #e2e8f0;
+  --font-primary:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
+    "Helvetica Neue", monospace;
 }
 
-/* Support both prefers-color-scheme and the .dark class toggle */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #020617;
+    --foreground: #e2e8f0;
+    --surface: #0f172a;
+    --surface-muted: #111827;
+    --border: #1f2937;
   }
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #020617;
+  --foreground: #e2e8f0;
+  --surface: #0f172a;
+  --surface-muted: #111827;
+  --border: #1f2937;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-primary);
+  --font-mono: var(--font-mono);
+}
+
+html {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(16, 185, 129, 0.12),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(14, 165, 233, 0.1),
+      transparent 24%
+    ),
+    var(--background);
 }
 
 body {
-  background: var(--background);
+  background: transparent;
   color: var(--foreground);
-  font-family: var(--font-geist-sans);
+  font-family: var(--font-primary);
+  min-height: 100vh;
 }
 
-/* Hide scrollbars while preserving scrolling */
-::-webkit-scrollbar {
-  display: none;
+body,
+html {
+  scroll-behavior: smooth;
 }
+
 * {
   scrollbar-width: none;
 }
 
-/* Smooth scroll globally (kept responsive) */
-html,
-body {
-  scroll-behavior: smooth;
+::-webkit-scrollbar {
+  display: none;
+}
+
+::selection {
+  background: rgba(16, 185, 129, 0.18);
+  color: var(--foreground);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
 }

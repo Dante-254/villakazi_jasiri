@@ -1,80 +1,112 @@
-import Image from "next/image";
 import Link from "next/link";
-import PATROLS from "../data/patrols";
 import HeroClient from "../components/ui/HeroClient";
 import EventsShowcase from "../components/events/EventsShowcase";
 
 export default function Home() {
   return (
-    <div className="snap-y snap-mandatory h-screen overflow-y-scroll">
+    <div className="snap-y snap-mandatory min-h-screen overflow-y-scroll bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.16),transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.14),transparent_28%)]">
       <HeroClient />
 
-      {/* Events showcase (server-side rendered) */}
-      <section className="snap-start py-16 px-6">
+      <section className="snap-start py-20 px-6">
         <div className="max-w-6xl mx-auto">
+          <div className="mb-8 rounded-[2rem] border border-slate-200/60 bg-white/85 p-10 shadow-2xl shadow-slate-900/5 backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-950/75">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-2xl">
+                <p className="uppercase tracking-[0.35em] text-xs text-slate-500">
+                  Featured explorer feed
+                </p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">
+                  A lively snapshot of our latest scouts adventures
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                  Discover the newest events, hero highlights, and patrol
+                  stories from Villakazi Jasiri.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  href="/events"
+                  className="rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-emerald-500"
+                >
+                  See all events
+                </Link>
+                <Link
+                  href="/gallery"
+                  className="rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-300 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                >
+                  Browse gallery
+                </Link>
+              </div>
+            </div>
+          </div>
           <EventsShowcase />
         </div>
       </section>
 
-      {/* Mission & Patrols */}
-      <section className="snap-start h-screen flex flex-col items-center justify-center py-16 px-6">
-        <div className="max-w-5xl w-full">
-          <div className="text-center">
-            <h2 className="text-3xl font-semibold">Our Mission</h2>
-            <p className="mt-3 text-gray-600 dark:text-neutral-300">
-              We cultivate young leaders through service, adventure and
-              disciplined learning following the Kenya Scouts Association
-              values.
-            </p>
-          </div>
-
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {PATROLS.map((p) => (
-              <div
-                key={p.id}
-                className="rounded-lg p-6 shadow-md"
-                style={{ borderTop: `4px solid ${p.color}` }}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold">{p.name}</h3>
-                    <p className="text-sm text-gray-600 dark:text-neutral-400">
-                      {p.status}
-                    </p>
-                  </div>
-                  <div className="w-12 h-12 bg-neutral-100 rounded-full flex items-center justify-center">
-                    {p.name.charAt(0)}
-                  </div>
-                </div>
-                <p className="mt-3 text-sm text-gray-700 dark:text-neutral-300">
-                  {p.description}
-                </p>
-                <div className="mt-4">
-                  <Link
-                    href={`/patrols/${p.id}`}
-                    className="text-sm font-medium text-green-700"
-                  >
-                    View Patrol →
-                  </Link>
-                </div>
-              </div>
-            ))}
+      <section className="snap-start py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid gap-6 lg:grid-cols-3">
+            <div className="rounded-[2rem] border border-slate-200/60 bg-white/90 p-8 shadow-2xl shadow-slate-900/5 backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-950/75">
+              <p className="text-sm uppercase tracking-[0.35em] text-emerald-600">
+                Our mission
+              </p>
+              <h2 className="mt-4 text-2xl font-semibold text-slate-900 dark:text-white">
+                Service, adventure, leadership
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                We cultivate young leaders through community service, outdoor
+                adventure and disciplined learning rooted in Kenyan scouting
+                values.
+              </p>
+            </div>
+            <div className="rounded-[2rem] border border-slate-200/60 bg-white/90 p-8 shadow-2xl shadow-slate-900/5 backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-950/75">
+              <p className="text-sm uppercase tracking-[0.35em] text-sky-600">
+                Our patrols
+              </p>
+              <h2 className="mt-4 text-2xl font-semibold text-slate-900 dark:text-white">
+                A crew built around teamwork
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                Each patrol brings a unique flavor of community support,
+                training and outdoor fun. Explore their stories and strengths
+                below.
+              </p>
+            </div>
+            <div className="rounded-[2rem] border border-slate-200/60 bg-white/90 p-8 shadow-2xl shadow-slate-900/5 backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-950/75">
+              <p className="text-sm uppercase tracking-[0.35em] text-violet-600">
+                Get involved
+              </p>
+              <h2 className="mt-4 text-2xl font-semibold text-slate-900 dark:text-white">
+                Join a movement that matters
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                Whether you're scouting, volunteering or supporting, every
+                contribution helps shape a brighter future for Nairobi youth.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Who we are & Events preview */}
-      <section className="snap-start h-screen flex items-center justify-center py-16 px-6 bg-neutral-50 dark:bg-neutral-900">
-        <div className="max-w-4xl text-center">
-          <h2 className="text-2xl font-semibold">Who We Are</h2>
-          <p className="mt-3 text-gray-600 dark:text-neutral-300">
-            Villakazi Jasiri Scouts is a Rover Crew under Kasarani Local
-            Association. We serve our community, explore the outdoors, and
-            practice leadership.
-          </p>
+      <section className="snap-start py-24 px-6 bg-neutral-50 dark:bg-neutral-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="rounded-[2rem] border border-slate-200/60 bg-white/85 p-10 shadow-2xl shadow-slate-900/5 backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-950/75">
+            <div className="text-center">
+              <p className="text-sm uppercase tracking-[0.35em] text-slate-500">
+                Who we are
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold text-slate-900 dark:text-white">
+                A modern crew with bold roots in scouting tradition
+              </h2>
+              <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">
+                Villakazi Jasiri Scouts blends disciplined training, community
+                service and joyful adventure into a fresh Rover Crew experience
+                for young leaders across Nairobi.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
-
     </div>
   );
 }
