@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { requireAdminRequest } from "@/lib/adminAuth";
 import { getSupabaseServer } from "@/lib/supabaseServer";
 
-function hasAdminCookie(req: Request) {
-  const cookieHeader = req.headers.get("cookie") || "";
-  return cookieHeader.includes("sb_admin_token");
-}
-
-export async function POST(req: Request) {
-  if (!hasAdminCookie(req)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function POST(req: NextRequest) {
+  const authError = await requireAdminRequest(req);
+  if (authError) {
+    return authError;
   }
 
   try {
@@ -39,7 +37,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ ok: true, leader: data });
-  } catch (err: any) {
-    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

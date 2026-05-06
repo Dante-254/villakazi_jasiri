@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { createClient } from "@/utils/supabase/client";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -40,6 +41,15 @@ export default function Header() {
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+useEffect(() => {
+  const supabase = createClient();
+  supabase.auth.getSession().then(({ data }) => {
+    setIsLoggedIn(!!data.session);
+  });
+}, []);
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-black/60 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
@@ -104,6 +114,14 @@ export default function Header() {
               </div>
             )}
           </div>
+          {isLoggedIn && (
+  <Link
+    href="/auth/logout"
+    className="px-3 py-2 rounded-md text-sm bg-red-600 text-white hover:bg-red-700 transition"
+  >
+    Logout
+  </Link>
+)}
 
           <ThemeToggle />
         </nav>
@@ -152,6 +170,14 @@ export default function Header() {
               </Link>
             ))}
           </div>
+          {isLoggedIn && (
+  <Link
+    href="/auth/logout"
+    className="px-3 py-2 rounded-md text-sm bg-red-600 text-white hover:bg-red-700 transition"
+  >
+    Logout
+  </Link>
+)}
         </div>
       )}
     </header>

@@ -17,7 +17,10 @@ export default function LoginPage() {
     setLoading(true);
 
     const supabase = createClient();
-    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
     if (authError) {
       setError(authError.message);
@@ -36,9 +39,13 @@ export default function LoginPage() {
   return (
     <div className="max-w-md mx-auto px-6 py-16">
       <h1 className="text-2xl font-semibold">Admin Login</h1>
-      <p className="mt-2 text-sm text-gray-600">Sign in with Supabase account credentials.</p>
+      <p className="mt-2 text-sm text-gray-600">
+        Sign in with Supabase account credentials.
+      </p>
       <form onSubmit={submit} className="mt-6 grid gap-3">
-        {error && <div className="rounded bg-red-100 p-3 text-red-700">{error}</div>}
+        {error && (
+          <div className="rounded bg-red-100 p-3 text-red-700">{error}</div>
+        )}
         <input
           className="p-3 border rounded-md"
           type="email"
@@ -55,7 +62,11 @@ export default function LoginPage() {
           placeholder="Password"
           required
         />
-        <button type="submit" disabled={loading} className="px-4 py-2 bg-green-700 text-white rounded-md">
+        <button
+          type="submit"
+          disabled={loading}
+          className="px-4 py-2 bg-green-700 text-white rounded-md"
+        >
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>

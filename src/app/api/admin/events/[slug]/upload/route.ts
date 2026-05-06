@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { requireAdminRequest } from "@/lib/adminAuth";
 import cloudinary from "@/lib/cloudinary";
 
-export async function POST(req: Request, context: { params: Promise<{ slug: string }> }) {
+export async function POST(req: NextRequest, context: { params: Promise<{ slug: string }> }) {
   try {
-    // Basic gate: require sb_admin_token cookie to exist
-    const cookieHeader = req.headers.get("cookie") || "";
-    if (!cookieHeader.includes("sb_admin_token")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authError = await requireAdminRequest(req);
+    if (authError) {
+      return authError;
     }
 
     const { slug } = await context.params;
@@ -29,8 +30,9 @@ export async function POST(req: Request, context: { params: Promise<{ slug: stri
     });
 
     return NextResponse.json({ ok: true, result: res });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Upload error", err);
-    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 });
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

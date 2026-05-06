@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { requireAdminRequest } from "@/lib/adminAuth";
 import { getSupabaseServer } from "@/lib/supabaseServer";
 
-function hasAdminCookie(req: Request) {
-  const cookieHeader = req.headers.get("cookie") || "";
-  return cookieHeader.includes("sb_admin_token");
-}
-
-export async function PUT(req: Request, context: { params: Promise<{ slug: string }> }) {
+export async function PUT(req: NextRequest, context: { params: Promise<{ slug: string }> }) {
   try {
-    if (!hasAdminCookie(req)) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authError = await requireAdminRequest(req);
+    if (authError) {
+      return authError;
     }
 
     const { slug } = await context.params;
@@ -43,16 +41,18 @@ export async function PUT(req: Request, context: { params: Promise<{ slug: strin
     }
 
     return NextResponse.json({ ok: true, event: data });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Update event error", err);
-    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 });
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-export async function DELETE(req: Request, context: { params: Promise<{ slug: string }> }) {
+export async function DELETE(req: NextRequest, context: { params: Promise<{ slug: string }> }) {
   try {
-    if (!hasAdminCookie(req)) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authError = await requireAdminRequest(req);
+    if (authError) {
+      return authError;
     }
     const { slug } = await context.params;
     if (!slug) return NextResponse.json({ error: "Missing slug" }, { status: 400 });
@@ -62,8 +62,9 @@ export async function DELETE(req: Request, context: { params: Promise<{ slug: st
     if (error) return NextResponse.json({ error: error.message || error }, { status: 500 });
 
     return NextResponse.json({ ok: true });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Delete event error", err);
-    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 });
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

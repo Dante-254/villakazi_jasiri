@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { requireAdminRequest } from "@/lib/adminAuth";
 import { getSupabaseServer } from "@/lib/supabaseServer";
 
-function hasAdminCookie(req: Request) {
-  const cookieHeader = req.headers.get("cookie") || "";
-  return cookieHeader.includes("sb_admin_token");
-}
-
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    if (!hasAdminCookie(req)) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authError = await requireAdminRequest(req);
+    if (authError) {
+      return authError;
     }
 
     const body = await req.json();
@@ -34,8 +32,9 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ ok: true, event: data });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Create event error", err);
-    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 });
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

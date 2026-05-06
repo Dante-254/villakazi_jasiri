@@ -1,21 +1,31 @@
-import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
+import { getSupabaseAnonKey, getSupabaseUrl } from "@/lib/env";
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+export async function middleware(request: NextRequest) {
+  const response = NextResponse.next({ request });
 
-  // Protect admin and admin API routes.
-  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
-    const cookieHeader = request.headers.get("cookie") || "";
-    if (!cookieHeader.includes("sb_admin_token")) {
-      const loginUrl = request.nextUrl.clone();
-      loginUrl.pathname = "/auth/login";
-      return NextResponse.redirect(loginUrl);
+  const supabase = createServerClient(
+    getSupabaseUrl(),
+    getSupabaseAnonKey(),
+    {
+      cookies: {
+        getAll: () => request.cookies.getAll(),
+        setAll: (cookiesToSet) => {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options);
+          });
+        },
+      },
     }
-  }
+  );
 
-  return NextResponse.next();
+  // Refresh session — important for keeping cookies alive
+  await supabase.auth.getUser();
+
+  return response;
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
