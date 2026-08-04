@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import PATROLS from "../data/patrols";
 import HeroClient from "../components/ui/HeroClient";
@@ -9,12 +8,8 @@ export default function Home() {
     <div className="snap-y snap-proximity h-screen overflow-y-scroll">
       <HeroClient />
 
-      {/* Events showcase (server-side rendered) */}
-      <section className="snap-start py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <EventsShowcase />
-        </div>
-      </section>
+      {/* Events showcase (featured event + upcoming, each snaps) */}
+      <EventsShowcase />
 
       {/* Mission & Patrols */}
       <section className="snap-start h-screen flex flex-col items-center justify-center py-16 px-6">

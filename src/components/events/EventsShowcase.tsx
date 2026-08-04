@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getSupabaseServer } from "@/lib/supabaseServer";
 import EventCard from "./EventCard";
 import EventHero from "./EventHero";
@@ -40,19 +41,29 @@ export default async function EventsShowcase() {
   const cards = (homeEvents && homeEvents.length ? homeEvents : latestEvents) || [];
 
   return (
-    <section className="space-y-8">
-      {hero && (
-        <div>
-          <EventHero event={hero} />
-        </div>
-      )}
+    <>
+      {hero && <EventHero event={hero} />}
 
-      <div>
-        <h3 className="text-xl font-semibold mb-4">Upcoming & Recent Events</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {cards.length ? cards.map((e: EventRow) => <EventCard key={e.id} event={e} />) : <div>No events to show</div>}
+      <section className="snap-start min-h-screen flex flex-col justify-center py-16 px-6">
+        <div className="max-w-6xl w-full mx-auto">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
+            <h3 className="text-xl font-semibold">Upcoming & Recent Events</h3>
+            <Link
+              href="/events"
+              className="text-sm font-medium text-green-700 hover:underline dark:text-green-400"
+            >
+              See all events →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {cards.length ? (
+              cards.map((e: EventRow) => <EventCard key={e.id} event={e} />)
+            ) : (
+              <div>No events to show</div>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
