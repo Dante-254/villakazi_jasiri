@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import ImageUploader from "./ImageUploader";
 
 type Props = { initialData?: any; eventId?: string | null };
 
@@ -113,15 +114,13 @@ export default function EventForm({ initialData, eventId }: Props) {
             <textarea value={description} onChange={(e)=>setDescription(e.target.value)} rows={4} className="w-full px-4 py-2 border rounded-lg" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Date</label>
-              <input type="date" value={date} onChange={(e)=>setDate(e.target.value)} className="w-full px-4 py-2 border rounded-lg" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Image URL</label>
-              <input type="url" value={image_url} onChange={(e)=>setImageUrl(e.target.value)} className="w-full px-4 py-2 border rounded-lg" />
-            </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Date</label>
+            <input type="date" value={date} onChange={(e)=>setDate(e.target.value)} className="w-full px-4 py-2 border rounded-lg" />
+          </div>
+
+          <div>
+            <ImageUploader label="Event image" value={image_url} onChange={setImageUrl} />
           </div>
 
           <div className="space-y-3 py-4 border-t">

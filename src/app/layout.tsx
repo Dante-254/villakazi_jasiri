@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <Header />
-        <main className="min-h-screen snap-y snap-mandatory scroll-smooth">
+        <main className="min-h-screen">
           {children}
         </main>
         <Footer />

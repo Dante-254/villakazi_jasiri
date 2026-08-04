@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import ImageUploader from "./ImageUploader";
 
 type Props = { initialData?: any; memberId?: string | null };
 
@@ -88,8 +89,7 @@ export default function PatrolMemberForm({ initialData, memberId }: Props) {
             <input type="number" value={age} onChange={(e)=>setAge(e.target.value)} className="w-full px-4 py-2 border rounded-lg" />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Photo URL</label>
-            <input type="url" value={photo} onChange={(e)=>setPhoto(e.target.value)} className="w-full px-4 py-2 border rounded-lg" />
+            <ImageUploader label="Photo" value={photo} onChange={setPhoto} />
           </div>
           <div className="flex justify-end gap-3 pt-4">
             <button type="button" onClick={()=>router.back()} className="px-6 py-2 border rounded-lg">Cancel</button>

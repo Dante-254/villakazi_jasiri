@@ -6,7 +6,7 @@ import EventsShowcase from "../components/events/EventsShowcase";
 
 export default function Home() {
   return (
-    <div className="snap-y snap-mandatory h-screen overflow-y-scroll">
+    <div className="snap-y snap-proximity h-screen overflow-y-scroll">
       <HeroClient />
 
       {/* Events showcase (server-side rendered) */}

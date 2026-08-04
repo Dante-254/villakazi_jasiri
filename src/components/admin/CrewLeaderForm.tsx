@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import ImageUploader from "./ImageUploader";
 
 type Props = { initialData?: any; leaderId?: string | null };
 
@@ -118,8 +119,7 @@ export default function CrewLeaderForm({ initialData, leaderId }: Props) {
             <textarea className="w-full px-4 py-2 border rounded-lg" value={bio} onChange={(e) => setBio(e.target.value)} rows={3} />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Image URL</label>
-            <input className="w-full px-4 py-2 border rounded-lg" type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+            <ImageUploader label="Profile image" value={imageUrl} onChange={setImageUrl} />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
