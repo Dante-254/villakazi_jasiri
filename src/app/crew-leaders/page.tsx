@@ -9,7 +9,7 @@ export default async function CrewLeadersPage() {
     <div className="max-w-6xl mx-auto px-6 py-16">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-semibold">Crew Leaders</h1>
-        <Link href="/admin/leaders" className="px-4 py-2 bg-green-600 text-white rounded">Manage Leaders</Link>
+        <Link href="/admin/leaders" className="btn-primary">Manage Leaders</Link>
       </div>
 
       {error && <div className="p-4 bg-red-100 text-red-600 rounded">Error loading crew leaders: {error.message}</div>}

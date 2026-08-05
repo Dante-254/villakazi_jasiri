@@ -143,8 +143,8 @@ export default function CrewLeaderForm({ initialData, leaderId }: Props) {
           </div>
 
           <div className="flex justify-end gap-3 pt-4">
-            <button type="button" onClick={() => router.back()} className="px-6 py-2 border rounded-lg">Cancel</button>
-            <button type="submit" disabled={loading} className="px-6 py-2 bg-blue-600 text-white rounded-lg">{loading ? (leaderId ? "Saving..." : "Creating...") : (leaderId ? "Save" : "Create Leader")}</button>
+            <button type="button" onClick={() => router.back()} className="btn-secondary">Cancel</button>
+            <button type="submit" disabled={loading} className="btn-primary">{loading ? (leaderId ? "Saving..." : "Creating...") : (leaderId ? "Save" : "Create Leader")}</button>
           </div>
         </form>
       </div>

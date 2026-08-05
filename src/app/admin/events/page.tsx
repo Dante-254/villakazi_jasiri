@@ -3,32 +3,62 @@ import { getSupabaseServer } from "@/lib/supabaseServer";
 
 export default async function AdminEventsPage() {
   const supabase = getSupabaseServer();
-  const { data: events, error } = await supabase.from("events").select("id,title,slug,date").order("date", { ascending: false });
+  const { data: events } = await supabase
+    .from("events")
+    .select("id,title,slug,date")
+    .order("date", { ascending: false });
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-16">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-semibold">Events</h1>
-        <Link href="/admin/events/add" className="px-4 py-2 bg-green-600 text-white rounded">Add Event</Link>
+    <div className="mx-auto max-w-6xl px-6 py-16">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.35em] text-green-700 dark:text-green-400">
+            Admin tools
+          </p>
+          <h1 className="mt-2 text-2xl font-semibold">Events</h1>
+        </div>
+        <Link href="/admin/events/add" className="btn-primary">
+          Create new event
+        </Link>
       </div>
 
       <div className="space-y-3">
         {events && events.length ? (
           events.map((e: any) => (
-            <div key={e.id} className="p-4 border rounded flex items-center justify-between">
+            <div
+              key={e.id}
+              className="flex flex-wrap items-center justify-between gap-3 rounded-[1.25rem] border border-neutral-200 p-4 dark:border-neutral-800"
+            >
               <div>
                 <div className="font-medium">{e.title}</div>
-                <div className="text-xs text-neutral-500">{e.slug} • {e.date ? new Date(e.date).toLocaleDateString() : ""}</div>
+                <div className="text-xs text-neutral-500">
+                  {e.slug} •{" "}
+                  {e.date ? new Date(e.date).toLocaleDateString() : ""}
+                </div>
               </div>
-              <div className="flex gap-2">
-                <Link href={`/admin/events/${e.slug}/edit`} className="px-3 py-1 border rounded">Edit</Link>
-                <Link href={`/admin/events/${e.slug}/upload`} className="px-3 py-1 border rounded">Upload</Link>
-                <Link href={`/events/${e.slug}`} className="px-3 py-1 border rounded">View</Link>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href={`/admin/events/${e.slug}/edit`}
+                  className="btn-ghost"
+                >
+                  Edit
+                </Link>
+                <Link
+                  href={`/admin/events/${e.slug}/upload`}
+                  className="btn-secondary"
+                >
+                  Upload
+                </Link>
+                <Link href={`/events/${e.slug}`} className="btn-secondary">
+                  View
+                </Link>
               </div>
             </div>
           ))
         ) : (
-          <div className="p-4 border rounded">No events yet</div>
+          <div className="rounded-[1.25rem] border border-dashed border-neutral-300 p-4 text-sm text-neutral-600 dark:border-neutral-700">
+            No events yet
+          </div>
         )}
       </div>
     </div>

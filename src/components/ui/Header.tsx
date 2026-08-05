@@ -17,7 +17,6 @@ const NAV_LINKS = [
   { href: "/events", label: "Events" },
   { href: "/blog", label: "Blog / Announcements" },
   { href: "/contact", label: "Contact" },
-  { href: "/admin", label: "Admin" },
 ];
 
 export default function Header() {
@@ -44,24 +43,24 @@ export default function Header() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-useEffect(() => {
-  const supabase = createClient();
-  supabase.auth.getSession().then(({ data }) => {
-    setIsLoggedIn(!!data.session);
-  });
-}, []);
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data }) => {
+      setIsLoggedIn(!!data.session);
+    });
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-black/60 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
-            <Image
+          <Image
             src="/jasiri_logo.webp"
             alt="Villakazi Jasiri Scouts Logo"
             width={48}
             height={48}
             className="rounded-full"
-            />
+          />
           <div className="min-w-[220px]">
             <div className="text-lg font-semibold">Villakazi Jasiri Scouts</div>
             <div className="text-xs text-gray-600 dark:text-neutral-400">
@@ -115,13 +114,13 @@ useEffect(() => {
             )}
           </div>
           {isLoggedIn && (
-  <Link
-    href="/auth/logout"
-    className="px-3 py-2 rounded-md text-sm bg-red-600 text-white hover:bg-red-700 transition"
-  >
-    Logout
-  </Link>
-)}
+            <Link
+              href="/auth/logout"
+              className="px-3 py-2 rounded-md text-sm bg-red-600 text-white hover:bg-red-700 transition"
+            >
+              Logout
+            </Link>
+          )}
 
           <ThemeToggle />
         </nav>
@@ -171,13 +170,13 @@ useEffect(() => {
             ))}
           </div>
           {isLoggedIn && (
-  <Link
-    href="/auth/logout"
-    className="px-3 py-2 rounded-md text-sm bg-red-600 text-white hover:bg-red-700 transition"
-  >
-    Logout
-  </Link>
-)}
+            <Link
+              href="/auth/logout"
+              className="px-3 py-2 rounded-md text-sm bg-red-600 text-white hover:bg-red-700 transition"
+            >
+              Logout
+            </Link>
+          )}
         </div>
       )}
     </header>

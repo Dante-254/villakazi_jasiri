@@ -9,7 +9,7 @@ export default async function AdminLeadersPage() {
     <div className="max-w-6xl mx-auto px-6 py-16">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold">Crew Leaders</h1>
-        <Link href="/admin/leaders/add" className="px-4 py-2 bg-green-600 text-white rounded">Add Leader</Link>
+        <Link href="/admin/leaders/add" className="btn-primary">Add Leader</Link>
       </div>
 
       <div className="space-y-3">

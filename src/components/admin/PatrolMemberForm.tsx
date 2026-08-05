@@ -92,8 +92,8 @@ export default function PatrolMemberForm({ initialData, memberId }: Props) {
             <ImageUploader label="Photo" value={photo} onChange={setPhoto} />
           </div>
           <div className="flex justify-end gap-3 pt-4">
-            <button type="button" onClick={()=>router.back()} className="px-6 py-2 border rounded-lg">Cancel</button>
-            <button type="submit" disabled={loading} className="px-6 py-2 bg-blue-600 text-white rounded-lg">{loading ? (memberId ? "Saving..." : "Adding...") : (memberId ? "Save" : "Add Member")}</button>
+            <button type="button" onClick={()=>router.back()} className="btn-secondary">Cancel</button>
+            <button type="submit" disabled={loading} className="btn-primary">{loading ? (memberId ? "Saving..." : "Adding...") : (memberId ? "Save" : "Add Member")}</button>
           </div>
         </form>
       </div>

@@ -3,8 +3,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-geist-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-geist-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Helvetica Neue", monospace;
+  --font-geist-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-geist-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
+    "Helvetica Neue", monospace;
 }
 
 /* Support both prefers-color-scheme and the .dark class toggle */
@@ -31,6 +35,18 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans);
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-green-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500/50;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-green-700/25 bg-white px-5 py-2.5 text-sm font-semibold text-green-800 shadow-sm transition hover:border-green-700 hover:bg-green-50 dark:bg-neutral-900 dark:text-green-300 dark:hover:bg-neutral-800;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-50 dark:text-green-300 dark:hover:bg-green-950/40;
 }
 
 /* Hide scrollbars while preserving scrolling */

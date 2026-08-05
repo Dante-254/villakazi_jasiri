@@ -12,7 +12,7 @@ export default async function AdminPatrolsPage() {
     <div className="max-w-6xl mx-auto px-6 py-16">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold">Patrol Member Management</h1>
-        <Link href="/admin/patrols/add" className="px-4 py-2 bg-green-600 text-white rounded">Add Member</Link>
+        <Link href="/admin/patrols/add" className="btn-primary">Add Member</Link>
       </div>
 
       <div className="space-y-3">

@@ -10,56 +10,63 @@ type EventRow = {
   description: string;
   date: string | null;
   image_url: string | null;
-  is_featured: boolean;
-  show_on_home: boolean;
 };
+
+function isPastEvent(value: string | null) {
+  if (!value) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const eventDate = new Date(`${value}T00:00:00`);
+  eventDate.setHours(0, 0, 0, 0);
+  return eventDate < today;
+}
 
 export default async function EventsShowcase() {
   const supabase = getSupabaseServer();
-
-  const { data: featuredEvents } = await supabase
+  const { data: allEvents } = await supabase
     .from("events")
     .select("*")
-    .eq("is_featured", true)
-    .order("date", { ascending: false })
-    .limit(1);
+    .order("date", { ascending: false });
 
-  const { data: homeEvents } = await supabase
-    .from("events")
-    .select("*")
-    .eq("show_on_home", true)
-    .order("date", { ascending: false })
-    .limit(6);
-
-  const { data: latestEvents } = await supabase
-    .from("events")
-    .select("*")
-    .order("date", { ascending: false })
-    .limit(6);
-
-  const hero = (featuredEvents && featuredEvents[0]) || (latestEvents && latestEvents[0]) || null;
-  const cards = (homeEvents && homeEvents.length ? homeEvents : latestEvents) || [];
+  const events = (allEvents || []).filter(
+    (event: EventRow) => event.title && event.description,
+  );
+  const upcomingEvents = events
+    .filter((event: EventRow) => !isPastEvent(event.date))
+    .sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+  const hero = upcomingEvents[0] || events[0] || null;
+  const cards = upcomingEvents.slice(0, 6);
+  const hasUpcoming = upcomingEvents.length > 0;
 
   return (
     <>
       {hero && <EventHero event={hero} />}
 
-      <section className="snap-start min-h-screen flex flex-col justify-center py-16 px-6">
-        <div className="max-w-6xl w-full mx-auto">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
-            <h3 className="text-xl font-semibold">Upcoming & Recent Events</h3>
-            <Link
-              href="/events"
-              className="text-sm font-medium text-green-700 hover:underline dark:text-green-400"
-            >
-              See all events →
+      <section className="flex min-h-screen flex-col justify-center px-6 py-16 sm:px-8 lg:px-10">
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-green-700 dark:text-green-400">
+                Upcoming adventures
+              </p>
+              <h3 className="mt-2 text-2xl font-semibold text-neutral-900 dark:text-white">
+                Fresh plans, camps and service days for the crew
+              </h3>
+            </div>
+            <Link href="/events" className="btn-ghost">
+              See all events <span className="ml-1">→</span>
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {cards.length ? (
-              cards.map((e: EventRow) => <EventCard key={e.id} event={e} />)
+              cards.map((event: EventRow) => (
+                <EventCard key={event.id} event={event} />
+              ))
             ) : (
-              <div>No events to show</div>
+              <div className="rounded-[1.5rem] border border-dashed border-neutral-300 bg-neutral-50 p-8 text-sm text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
+                No upcoming events are scheduled yet. Please check back soon.
+              </div>
             )}
           </div>
         </div>
