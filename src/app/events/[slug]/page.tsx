@@ -105,7 +105,7 @@ export default async function EventDetail({
                   href={`/gallery?event=${event.slug}`}
                   className="btn-primary"
                 >
-                  Open gallery
+                  Open gallery <span className="ml-1">→</span>
                 </Link>
                 {isAdmin ? (
                   <Link
@@ -122,22 +122,73 @@ export default async function EventDetail({
       </section>
 
       <div className="mx-auto max-w-5xl px-6 py-10">
-        <div className="rounded-[2rem] border border-neutral-200 bg-neutral-50 p-8 dark:border-neutral-800 dark:bg-neutral-900">
-          <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
-            Why this event matters
-          </h2>
-          <p className="mt-3 text-base leading-8 text-neutral-600 dark:text-neutral-300">
-            This space is designed to keep the crew informed, prepared and
-            connected. Whether it is a service day, camp or special meeting, the
-            details here help everyone know what is coming and how to take part.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <span className="rounded-full border border-green-200 bg-green-50 px-4 py-2 text-sm font-medium text-green-700 dark:border-green-900 dark:bg-green-950/40 dark:text-green-300">
-              {past ? "Reflecting on past learning" : "Planning ahead together"}
-            </span>
-            <span className="rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
-              {event.location || "Community-based activity"}
-            </span>
+        <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
+          <div className="rounded-[2rem] border border-neutral-200 bg-neutral-50 p-8 dark:border-neutral-800 dark:bg-neutral-900">
+            <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
+              {past ? "What this event left behind" : "What to expect"}
+            </h2>
+            <p className="mt-3 text-base leading-8 text-neutral-600 dark:text-neutral-300">
+              {past
+                ? "This event has been completed, but its lessons, photos and impact live on. Revisit the gallery to relive the moments and see how far the crew has come."
+                : "Mark the date, rally the crew and come ready to serve. Bring your uniform, a good attitude and an open mind — details below tell you everything you need to take part."}
+            </p>
+            <p className="mt-4 text-base leading-8 text-neutral-600 dark:text-neutral-300">
+              {event.description}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/events"
+                className="inline-flex items-center text-sm font-semibold text-green-700 transition hover:text-green-800 dark:text-green-400 dark:hover:text-green-300"
+              >
+                <span aria-hidden="true" className="mr-2">←</span> Back to all events
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] border border-neutral-200 bg-white p-8 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+            <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
+              At a glance
+            </h2>
+            <dl className="mt-5 space-y-5 text-sm">
+              <div>
+                <dt className="font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+                  Date
+                </dt>
+                <dd className="mt-1 text-neutral-800 dark:text-neutral-100">
+                  {eventDate}
+                </dd>
+              </div>
+              <div>
+                <dt className="font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+                  Status
+                </dt>
+                <dd className="mt-1">
+                  <span
+                    className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-white ${
+                      past ? "bg-neutral-700" : "bg-green-700"
+                    }`}
+                  >
+                    {past ? "Past event" : "Upcoming"}
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt className="font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+                  Where
+                </dt>
+                <dd className="mt-1 text-neutral-800 dark:text-neutral-100">
+                  {event.location || "Community-based activity"}
+                </dd>
+              </div>
+              <div>
+                <dt className="font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+                  Open to
+                </dt>
+                <dd className="mt-1 text-neutral-800 dark:text-neutral-100">
+                  All Jasiri crew members
+                </dd>
+              </div>
+            </dl>
           </div>
         </div>
       </div>

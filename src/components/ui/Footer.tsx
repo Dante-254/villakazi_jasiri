@@ -13,7 +13,7 @@ export default function Footer() {
               <div>
                 <div className="font-semibold">Villakazi Jasiri Scouts</div>
                 <div className="text-sm text-gray-600 dark:text-neutral-400">
-                  Motto: "Service and Progress"
+                  Motto: &quot;Service and Progress&quot;
                 </div>
               </div>
             </div>
@@ -73,10 +73,22 @@ export default function Footer() {
               <div className="font-semibold">Support</div>
               <ul className="mt-2 text-sm">
                 <li>
-                  <a href="#">WhatsApp (placeholder)</a>
+                  <a
+                    className="hover:underline"
+                    href="mailto:villakazijasiriscouts@gmail.com"
+                  >
+                    Email the crew
+                  </a>
                 </li>
                 <li>
-                  <a href="#">Volunteer</a>
+                  <Link className="hover:underline" href="/contact">
+                    Volunteer
+                  </Link>
+                </li>
+                <li>
+                  <Link className="hover:underline" href="/laws">
+                    Promise & Law
+                  </Link>
                 </li>
               </ul>
             </div>

@@ -56,8 +56,8 @@ export default function EventGalleryUploadClient({ slug, title }: { slug: string
         setFile(null);
         setPreview(null);
       }
-    } catch (err: any) {
-      setError(err?.message || "Error uploading");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error uploading");
     } finally {
       setLoading(false);
     }
@@ -128,10 +128,10 @@ export default function EventGalleryUploadClient({ slug, title }: { slug: string
           )}
 
           <div className="flex gap-3">
-            <button onClick={upload} disabled={loading} className="px-4 py-2 bg-green-600 text-white rounded">
+            <button onClick={upload} disabled={loading} className="btn-primary">
               {loading ? "Uploading…" : "Upload"}
             </button>
-            <button onClick={() => { setFile(null); setPreview(null); setMessage(null); setError(null); }} className="px-4 py-2 border rounded">Clear</button>
+            <button onClick={() => { setFile(null); setPreview(null); setMessage(null); setError(null); }} className="btn-ghost">Clear</button>
           </div>
 
           {message && <div className="mt-3 text-sm text-green-600">{message}</div>}

@@ -34,9 +34,10 @@ export default async function EventsShowcase() {
   const upcomingEvents = events
     .filter((event: EventRow) => !isPastEvent(event.date))
     .sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+  const pastEvents = events
+    .filter((event: EventRow) => isPastEvent(event.date))
+    .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   const hero = upcomingEvents[0] || events[0] || null;
-  const cards = upcomingEvents.slice(0, 6);
-  const hasUpcoming = upcomingEvents.length > 0;
 
   return (
     <>
@@ -59,8 +60,8 @@ export default async function EventsShowcase() {
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {cards.length ? (
-              cards.map((event: EventRow) => (
+            {upcomingEvents.length ? (
+              upcomingEvents.map((event: EventRow) => (
                 <EventCard key={event.id} event={event} />
               ))
             ) : (
@@ -71,6 +72,26 @@ export default async function EventsShowcase() {
           </div>
         </div>
       </section>
+
+      {pastEvents.length ? (
+        <section className="px-6 pb-16 sm:px-8 lg:px-10">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-8 border-t border-neutral-200 pt-10 dark:border-neutral-800">
+              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-neutral-500 dark:text-neutral-400">
+                The archive
+              </p>
+              <h3 className="mt-2 text-2xl font-semibold text-neutral-900 dark:text-white">
+                Past events · {pastEvents.length}
+              </h3>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {pastEvents.map((event: EventRow) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
     </>
   );
 }

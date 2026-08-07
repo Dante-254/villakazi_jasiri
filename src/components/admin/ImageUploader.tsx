@@ -102,7 +102,7 @@ export default function ImageUploader({ label = "Image", value, onChange }: Prop
           onClick={() => setMode("upload")}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
             mode === "upload"
-              ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+              ? "bg-green-700 text-white"
               : "border text-neutral-600 hover:bg-neutral-50 dark:text-neutral-300 dark:hover:bg-neutral-800"
           }`}
         >
@@ -113,7 +113,7 @@ export default function ImageUploader({ label = "Image", value, onChange }: Prop
           onClick={() => setMode("url")}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
             mode === "url"
-              ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+              ? "bg-green-700 text-white"
               : "border text-neutral-600 hover:bg-neutral-50 dark:text-neutral-300 dark:hover:bg-neutral-800"
           }`}
         >

@@ -65,7 +65,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-green-700 text-white rounded-md"
+          className="btn-primary"
         >
           {loading ? "Signing in..." : "Sign in"}
         </button>
